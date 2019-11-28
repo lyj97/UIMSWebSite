@@ -13,6 +13,11 @@ export default [
                 component: resolve => require(['../pages/login/'], resolve)
             },
             {
+                path: '/register', //注册
+                meta: { auth: false },
+                component: resolve => require(['../pages/register/'], resolve)
+            },
+            {
                 path: '/signout', //退出
                 component: resolve => require(['../pages/signout/'], resolve)
             },

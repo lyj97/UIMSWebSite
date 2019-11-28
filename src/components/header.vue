@@ -20,10 +20,6 @@
 		.right {
 			right: 10px;
 		}
-		.below-right {
-			top: 50px;
-			right: 10px;
-		}
 	}
 </style>
 <template>
@@ -34,9 +30,6 @@
 		<div class="title">{{title}}</div>
 		<div class="item right">
 			<slot name="right"></slot>
-		</div>
-		<div class="below-right">
-			<slot name="below"></slot>
 		</div>
 	</header>
 </template>

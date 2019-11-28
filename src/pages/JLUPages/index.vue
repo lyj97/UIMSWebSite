@@ -6,16 +6,6 @@
 		<v-header title="网址导航">
             <router-link slot="left" to="/">首页</router-link>
 			<router-link slot="right" v-if="user.id" to="/home">{{user.name}}</router-link>
-            <el-header style="text-align: right; font-size: 12px" slot="below">
-                <el-dropdown>
-                    <i class="el-icon-arrow-down" style="margin-right: 15px">快速跳转</i>
-                    <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item><router-link to="/">首页</router-link></el-dropdown-item>
-                    <el-dropdown-item><router-link to="/list">校内通知</router-link></el-dropdown-item>
-                    <el-dropdown-item v-if="user.id"><router-link to="/home">个人中心</router-link></el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-            </el-header>
 		</v-header>
         <el-table
             :data="tableData"
@@ -60,6 +50,7 @@
 </template>
 <script>
     import { mapState } from 'vuex'
+    import {ali_host} from 'store/host.js'
     export default {
 		data() {
 			return {
@@ -82,7 +73,7 @@
                 this.tableData= [{
                     title: "加载中..."
                 }];
-                var api = "http://2045.site:8099/UIMSTest/GetTestFunctionItems";
+                var api = ali_host + ":8099/UIMSTest/GetTestFunctionItems";
                 this.$http.get(api).then
                 (
                     function (response) 

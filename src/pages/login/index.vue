@@ -22,6 +22,10 @@
 		width: 480px;
 		margin:80px auto;
 	}
+	.link{
+		color: rgb(70, 187, 255);
+		font-size: 12px;
+	}
 </style>
 <template>
 	<div>
@@ -51,6 +55,9 @@
 					</el-alert>
 				</div>
 				<el-button type="primary" @click="submit()">登录</el-button>
+				<br/>
+				<br/>
+				<a href="/app/#/register" class="link">注册新账号</a>
 			</form>
 		</el-card>
 		<el-dialog title="请设置密码" :visible.sync="dialogTableVisible">
@@ -87,8 +94,8 @@
 </template>
 <script>
     import { mapActions } from 'vuex'
-    import { USER_SIGNIN } from 'store/user'
-
+	import { USER_SIGNIN } from 'store/user'
+	import {huawei_host} from 'store/host.js'
     export default {
         data() {
 			return {
@@ -121,7 +128,7 @@
 			},
 			login() {
 				if(!this.form.id || !this.form.pass) return;
-				var api = "http://127.0.0.1:8199/api/user/login";
+				var api = huawei_host + ":8199/api/user/login";
 				this.$http.post(
 						api,
 						{userId: this.form.id, password: this.form.pass},
@@ -130,7 +137,6 @@
 				).then(
 					function (response) 
                     {
-						console.log(response);
 						this.form.name = response.body.nickname;
 						if(response.body.status != 0){
 							this.$alert(response.body.message, "Error!", {
@@ -147,7 +153,6 @@
 						}
                     },
                     function (err) {
-                        console.log(err);
                         this.$alert(err, "Error!", {
                             lockScroll: false,
                             closeOnClickModal: true,
@@ -173,7 +178,7 @@
 					});
 					return;
 				}
-				var api = "http://127.0.0.1:8199/api/user/setPassword";
+				var api = huawei_host + ":8199/api/user/setPassword";
 				this.$http.post(
 						api,
 						{password: this.password},
@@ -182,7 +187,6 @@
 				).then(
 					function (response) 
                     {
-						console.log(response);
 						if(response.body.status == 0 && !response.body.resetPass){
 							this.$message({
 								type: 'success',
@@ -199,7 +203,6 @@
 						}
                     },
                     function (err) {
-                        console.log(err);
                         this.$alert(err, "Error!", {
                             lockScroll: false,
                             closeOnClickModal: true,
