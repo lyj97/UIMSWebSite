@@ -36,8 +36,7 @@
             :loading="dialog_loading"
             :visible.sync="dialogVisible"
             :width="dialog_width"
-            dangerouslyUseHTMLString: true
-            :before-close="handleClose">
+            dangerouslyUseHTMLString: true>
 
             <div v-html="information"></div>
             <span slot="footer" class="dialog-footer">
@@ -59,6 +58,8 @@
                 }],
                 tableHeight: window.innerHeight * 0.8,
                 loading: true,
+
+                //提示弹窗
                 dialogVisible: false,
                 information:"",
                 dialog_title:"",

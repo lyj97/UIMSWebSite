@@ -198,7 +198,10 @@
                 this.dialog_title = "提示";
                 this.information = "加载中...";
                 var url = 'http://2045.site:8099/UIMSTest/GetNewsDetail';
-                this.$http.post(url, {url : news_link}, {emulateJSON:true}).then(function(res){
+                this.$http.post(url,
+                    {url : news_link},
+                    {emulateJSON: true, withCredentials: true}
+                ).then(function(res){
                     if(!res.ok){
                         // alert('请求出错！');
                         this.$alert("请稍后重试.如需帮助，请联系网站管理者.", "加载失败！", {

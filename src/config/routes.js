@@ -40,6 +40,16 @@ export default [
                 component: resolve => require(['../pages/JLUPages/'], resolve)
             },
             {
+                path: '/jlupages_new', //JLUPages
+                meta: { auth: false },
+                component: resolve => require(['../pages/JLUPages_new/'], resolve)
+            },
+            {
+                path: '/version', //version
+                meta: { auth: false },
+                component: resolve => require(['../pages/version/'], resolve)
+            },
+            {
                 path: '/', //首页
                 meta: { auth: false },
                 component: resolve => require(['../pages/index/'], resolve)

@@ -45,7 +45,7 @@
 					</el-alert>
 				</div>
 				<div class="line">
-					<el-input type="text" v-model="form.pass" placeholder="输入你的密码"></el-input>
+					<el-input type="text" v-model="form.pass" placeholder="输入你的密码" show-password></el-input>
 					<br/>
 					<el-alert 
 						v-show="btn && !form.pass"
@@ -133,7 +133,7 @@
 						api,
 						{userId: this.form.id, password: this.form.pass},
 						//解决跨域问题，不加无法跨域
-            			{emulateJSON: true}
+            			{emulateJSON: true, withCredentials: true}
 				).then(
 					function (response) 
                     {
@@ -183,7 +183,7 @@
 						api,
 						{password: this.password},
 						//解决跨域问题，不加无法跨域
-            			{emulateJSON: true}
+            			{emulateJSON: true, withCredentials: true}
 				).then(
 					function (response) 
                     {

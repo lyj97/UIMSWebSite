@@ -1,10 +1,10 @@
 <style lang="less" scoped>
 	.login-msg {
-		padding: 50px;
+		// padding: 50px;
 		text-align: center;
 	}
 	.msg {
-		padding: 50px;
+		// padding: 50px;
 		text-align: center;
 		font-size: 20px;
 	}
@@ -13,10 +13,6 @@
 	}
 	.text {
 		font-size: 16px;
-	}
-
-	.item {
-		padding: 18px 0;
 	}
 
 	.box-card {
@@ -69,6 +65,10 @@
 				<div class="main_text">
 					UIMSTest提供<br/>课程管理、 <el-link href="/app/#/list" class="main_text el-icon-link">校内通知查询</el-link>、 <el-link href="/app/#/jlupages" class="main_text el-icon-link">校园网址导航</el-link>、 成绩统计<br/>等功能，较好整合了校内与校外访问接口，欢迎下载体验.
 				</div>
+				<br/>
+				<div class="main_text">
+					同时，您也可以在<el-link href="/app/#/jlupages_new" class="main_text el-icon-link">这里</el-link>贡献常用网址，不限校内外哦~
+				</div>
 			</el-card>
 			<br/>
 			<br/>
@@ -77,6 +77,8 @@
 				<br/>
 				<br/>
 				<div class="main_text">
+					UIMSTest即将上线课程编辑功能，助你轻松管理课程^_^
+					<br/>
 					UIMSTest即将上线数据备份/恢复功能，不在学校也能恢复数据哦~
 				</div>
 			</el-card>
@@ -114,12 +116,27 @@
 				<el-popover
 					placement="top"
 					trigger="hover">
-					<el-table :data="movie_data">
-						<el-table-column min-width="120" property="movieName" label="影片"></el-table-column>
+					<!-- <el-table 
+						:data="movie_data" 
+						:height="popUpWindowHight"
+						style="{width: popUpWindowWidth}"> -->
+					
+					<el-table 
+						:data="movie_data" 
+						:height="popUpWindowHight"
+						style="width: 100%">
+
+						<el-table-column fixed="left" min-width="130" property="movieName" label="影片"></el-table-column>
 						<el-table-column property="releaseInfo" label="上映时间"></el-table-column>
 						<el-table-column property="boxInfo" label="综合票房(万)"></el-table-column>
 						<el-table-column property="boxRate" label="票房占比"></el-table-column>
 						<el-table-column property="splitSumBoxInfo" label="全球票房(美元)"></el-table-column>
+						<el-table-column label="豆瓣">
+							<template slot-scope="scope">
+								<el-button icon="el-icon-search" @click="openMoviePage(scope.row.movieName)" circle></el-button>
+							</template>
+						</el-table-column>
+
 					</el-table>
 					<el-button slot="reference">I'm here.</el-button>
 				</el-popover>
@@ -157,12 +174,17 @@
 				logo,
 				movie_data: [{
 					movieName:'暂无数据'
-				}]
+				}],
+
+				//电影数据弹出框高度
+				popUpWindowHight : window.innerHeight * 0.7,
+				popUpWindowWidth : window.innerWidth * 0.7,
 			}
 		},
         computed: mapState({ user: state => state.user }),
 		methods:{
             getInformation(){
+
                 var api = ali_host + ":8099/UIMSTest/GetVersionInformation";
                 this.$http.get(api).then
                 (
@@ -223,7 +245,8 @@
 			obtainMovieData(movie_list){
 				movie_list = JSON.parse(movie_list);
 				var hot_movie_msg = '';
-				movie_list = movie_list.data.list.slice(0,10);
+				// movie_list = movie_list.data.list.slice(0,10);
+				movie_list = movie_list.data.list;
 				this.movie_data = movie_list;
 				var temp;
 				for(var i=0; i<5; i++){
@@ -231,10 +254,20 @@
 					hot_movie_msg = hot_movie_msg + (1 + i) + ' ' + temp.movieName + '\n';
 				}
 				this.sendNotifyHtml('[Tips:]热映影片', hot_movie_msg);
+			},
+			openMoviePage(movie_name){
+				// console.log(movie_name);
+				window.open(("https://search.douban.com/movie/subject_search?search_text=" + movie_name));
 			}
 		},
 		mounted(){
-            this.getInformation();
+			this.getInformation();
+			window.onresize = () => {
+                return (() => {
+					this.popUpWindowHight = window.innerHeight * 0.7;
+					this.popUpWindowWidth = window.innerWidth * 0.7;
+                })();
+            };
         },
     }
 </script>
