@@ -40,7 +40,7 @@
 		</div>
 		<div class="title">{{title}}</div>
 		<div class="bottom-text">Copyright © lu 2019</div>
-		<div class="bottom-text"><a href="http://www.miitbeian.gov.cn/">吉ICP备 19000593 号</a></div>
+		<div class="bottom-text"><a href="http://www.beian.miit.gov.cn">吉ICP备 19000593 号</a></div>
 		<div class="item right">
 			<slot name="right"></slot>
 		</div>

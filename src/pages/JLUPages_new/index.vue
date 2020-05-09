@@ -32,8 +32,8 @@
 		</v-header>
         <br/>
         <div class="myTopDiv">
-            <el-input style="width: 85%" type="text" v-model="websiteSearchStr" placeholder="搜索..."></el-input>
-            <el-button type="primary" @click="getData()">搜 索</el-button>
+            <el-input v-on:keyup.enter="getData()" style="width: 70%" type="text" v-model="websiteSearchStr" placeholder="搜索..."></el-input>
+            <el-button type="primary" icon="el-icon-search" @click="getData()">搜 索</el-button>
         </div>
         <div class="myMainDiv">
             <el-table

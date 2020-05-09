@@ -50,6 +50,21 @@ export default [
                 component: resolve => require(['../pages/version/'], resolve)
             },
             {
+                path: '/guide', //guide
+                meta: { auth: false },
+                component: resolve => require(['../pages/changeURLGuide/'], resolve)
+            },
+            {
+                path: '/donate', //donate
+                meta: { auth: false },
+                component: resolve => require(['../pages/donate/'], resolve)
+            },
+            {
+                path: '/applyInfo', //贝壳内推查询
+                meta: { auth: false },
+                component: resolve => require(['../pages/applyInfo/'], resolve)
+            },
+            {
                 path: '/', //首页
                 meta: { auth: false },
                 component: resolve => require(['../pages/index/'], resolve)

@@ -99,6 +99,12 @@
             <el-input style="width:80%" type="number" v-model="pageSize" placeholder="输入OA页数..."></el-input>
             <el-button type="primary" @click="setOAPage()">确 定</el-button>
             <br/><br/><br/>
+            <div >设置OA列表获取页数</div>
+            <br/>
+            <el-input style="width:40%" type="number" v-model="pageSamll" placeholder="输入OA页数..."></el-input>
+            <el-input style="width:40%" type="number" v-model="pageLarge" placeholder="输入OA页数..."></el-input>
+            <el-button type="primary" @click="setOAAutoPage()">确 定</el-button>
+            <br/><br/><br/>
             <div >刷新OA详情时间</div>
             <br/>
             <el-button type="primary" @click="flushOATime()">刷新OA详情时间</el-button>
@@ -112,6 +118,31 @@
             <el-input style="width:100%" type="textarea" :rows="5" v-model="linkTemplete" placeholder="输入Link模板..."></el-input>
             <br/><br/>
             <el-button type="primary" @click="setLinkTemplete()">确 定</el-button>
+            <br/><br/><br/>
+            <div >测试Link模板(Link:[#link#])</div>
+            <el-input style="width:100%" type="textarea" :rows="5" v-model="testLinkStr" placeholder="输入Link测试网址..."></el-input>
+            <br/><br/>
+            <el-button type="primary" @click="getLinkTestResult()">确 定</el-button>
+        </el-card>
+
+        <el-card class="box-card" v-if="userinfo.type == 1">
+            <el-tag class="title_tag">Config相关设置</el-tag>
+            <br/><br/><br/>
+            <div >设置Config JSON</div>
+            <br/>
+            <el-input style="width:100%" type="textarea" :rows="5" v-model="configJSONStr" placeholder="输入Config JSON..."></el-input>
+            <br/><br/>
+            <el-button type="primary" @click="setConfigJSON()">确 定</el-button>
+        </el-card>
+
+        <el-card class="box-card" v-if="userinfo.type == 1">
+            <el-tag class="title_tag">贝壳找房 - 内推信息</el-tag>
+            <br/><br/><br/>
+            <div >上传内推信息</div>
+            <br/>
+            <el-input style="width:100%" type="textarea" :rows="5" v-model="beikeApplyInfo" placeholder="输入内推信息..."></el-input>
+            <br/><br/>
+            <el-button type="primary" @click="setApplyInfoJSON()">确 定</el-button>
         </el-card>
 
 		<el-dialog
@@ -156,9 +187,20 @@
 
                 //OA页数
                 pageSize: 0,
+                pageSamll: 0,
+                pageLarge: 0,
 
                 //Link模板
                 linkTemplete: '',
+
+                //测试link模板正确性的测试网址
+                testLinkStr: '',
+
+                //Config JSON
+                configJSONStr: '',
+
+                //内推信息
+                beikeApplyInfo: '',
 			}
         },
         methods: {
@@ -187,6 +229,26 @@
                         });
                     }
                 );
+
+                var api_news_auto = huawei_host + ":8199/api/common/oa/getAutoManagePageNumber";
+				this.$http.post(
+						api_news_auto,
+						{},
+						//解决跨域问题，不加无法跨域
+            			{emulateJSON: true, withCredentials: true}
+				).then(
+					function (response) 
+                    {
+                        this.pageSamll = response.data.data.small;
+                        this.pageLarge = response.data.data.large;
+                    },
+                    function (err) {
+                        this.$alert(err, "Error!", {
+                            lockScroll: false,
+                            closeOnClickModal: true,
+                        });
+                    }
+                );
                 
                 var api_link = huawei_host + ":8199/api/LinkJSCode/getCode";
 				this.$http.post(
@@ -199,6 +261,60 @@
                     {
                         if(response.data.status == 0){
                             this.linkTemplete = response.data.data;
+                        }
+                        else{
+                            this.$message({
+                                type: 'warning',
+                                message: response.data.message
+                            });
+                        }
+                    },
+                    function (err) {
+                        this.$alert(err, "Error!", {
+                            lockScroll: false,
+                            closeOnClickModal: true,
+                        });
+                    }
+                )
+                
+                var api_config = huawei_host + ":8199/api/config/getConfigJSON";
+				this.$http.post(
+						api_config,
+						{},
+						//解决跨域问题，不加无法跨域
+            			{emulateJSON: true, withCredentials: true}
+				).then(
+					function (response) 
+                    {
+                        if(response.data.status == 0){
+                            this.configJSONStr = JSON.stringify(response.data.data);
+                        }
+                        else{
+                            this.$message({
+                                type: 'warning',
+                                message: response.data.message
+                            });
+                        }
+                    },
+                    function (err) {
+                        this.$alert(err, "Error!", {
+                            lockScroll: false,
+                            closeOnClickModal: true,
+                        });
+                    }
+                )
+                
+                var api_apply_info = huawei_host + ":8199/api/beike/apply/originInfo";
+				this.$http.post(
+						api_apply_info,
+						{},
+						//解决跨域问题，不加无法跨域
+            			{emulateJSON: true, withCredentials: true}
+				).then(
+					function (response) 
+                    {
+                        if(response.data.status == 0){
+                            this.beikeApplyInfo = JSON.stringify(response.data.message);
                         }
                         else{
                             this.$message({
@@ -243,6 +359,38 @@
 				this.$http.post(
 						api,
 						{page: this.pageSize},
+						//解决跨域问题，不加无法跨域
+            			{emulateJSON: true, withCredentials: true}
+				).then(
+					function (response) 
+                    {
+                        if(response.data.status == 0){
+                            this.$message({
+                                type: 'success',
+                                message: '设置成功.'
+                            });
+                        }
+                        else{
+                            this.$message({
+                                type: 'warning',
+                                message: response.data.message
+                            });
+                        }
+                        this.getData();
+                    },
+                    function (err) {
+                        this.$alert(err, "Error!", {
+                            lockScroll: false,
+                            closeOnClickModal: true,
+                        });
+                    }
+				)
+            },
+            setOAAutoPage(){
+                var api = huawei_host + ":8199/api/common/oa/setAutoManagePageNumber";
+				this.$http.post(
+						api,
+						{smallPage: this.pageSamll, largePage: this.pageLarge},
 						//解决跨域问题，不加无法跨域
             			{emulateJSON: true, withCredentials: true}
 				).then(
@@ -315,7 +463,103 @@
                         if(response.data.status == 0){
                             this.$message({
                                 type: 'success',
-                                message: '刷新提交成功.'
+                                message: '设置Link成功.'
+                            });
+                        }
+                        else{
+                            this.$message({
+                                type: 'warning',
+                                message: response.data.message
+                            });
+                        }
+                        this.getData();
+                    },
+                    function (err) {
+                        this.$alert(err, "Error!", {
+                            lockScroll: false,
+                            closeOnClickModal: true,
+                        });
+                    }
+				)
+            },
+            getLinkTestResult(){
+                var api_link = huawei_host + ":8199/api/LinkJSCode/getCode";
+				this.$http.post(
+						api_link,
+						{link: this.testLinkStr},
+						//解决跨域问题，不加无法跨域
+            			{emulateJSON: true, withCredentials: true}
+				).then(
+					function (response) 
+                    {
+                        if(response.data.status == 0){
+                            this.linkTemplete = response.data.data;
+                            this.$message({
+                                type: 'success',
+                                message: '获取Link测试结果成功.'
+                            });
+                        }
+                        else{
+                            this.$message({
+                                type: 'warning',
+                                message: response.data.message
+                            });
+                        }
+                    },
+                    function (err) {
+                        this.$alert(err, "Error!", {
+                            lockScroll: false,
+                            closeOnClickModal: true,
+                        });
+                    }
+				)
+            },
+            setConfigJSON(){
+                var api = huawei_host + ":8199/api/config/setConfigJSON";
+				this.$http.post(
+						api,
+						{config: this.configJSONStr},
+						//解决跨域问题，不加无法跨域
+            			{emulateJSON: true, withCredentials: true}
+				).then(
+					function (response) 
+                    {
+                        if(response.data.status == 0){
+                            this.$message({
+                                type: 'success',
+                                message: '设置Config JSON成功.'
+                            });
+                        }
+                        else{
+                            this.$message({
+                                type: 'warning',
+                                message: response.data.message
+                            });
+                        }
+                        this.getData();
+                    },
+                    function (err) {
+                        this.$alert(err, "Error!", {
+                            lockScroll: false,
+                            closeOnClickModal: true,
+                        });
+                    }
+				)
+            },
+            setApplyInfoJSON(){
+                var api = huawei_host + ":8199/api/beike/apply/upload";
+				this.$http.post(
+						api,
+						{data: this.beikeApplyInfo},
+						//解决跨域问题，不加无法跨域
+            			{emulateJSON: true, withCredentials: true}
+				).then(
+					function (response) 
+                    {
+                        if(response.data.status == 0){
+                            this.$message({
+                                type: 'success',
+                                message: '设置ApplyInfo成功.更新了 ' + response.data.data + ' 条数据.',
                             });
                         }
                         else{

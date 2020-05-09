@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node server",
+    "dev": "node server dev",
     "dev:dist": "cross-env NODE_ENV=production gulp devDist",
     "dev:test": "gulp devTest"
   },
@@ -36,10 +36,15 @@
     "webpack-dev-server": "^1.16.2"
   },
   "dependencies": {
-    "element-ui": "^2.10.1",
+    "@types/videojs": "^5.16.2",
+    "element-ui": "^2.13.0",
+    "video.js": "^7.6.6",
+    "videojs": "^1.0.0",
     "vue": "^2.6.10",
     "vue-resource": "^1.5.1",
     "vue-router": "^2.8.1",
-    "vuex": "^2.5.0"
+    "vue-video-player": "^5.0.2",
+    "vuex": "^2.5.0",
+    "wordcloud": "^1.1.1"
   }
 }

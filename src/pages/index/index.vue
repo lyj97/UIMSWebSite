@@ -28,9 +28,28 @@
 		// width: 330px;
 		background: #52b1ff
 	}
+	.box-card-orange {
+		// width: 330px;
+		background: #ffe8c5
+	}
+	.box-card-red {
+		// width: 330px;
+		background: rgb(245, 82, 17);
+	}
 	.title_tag {
 		font-size: 20px;
 		font-weight: 500;
+	}
+	.title_tag_orange {
+		background: #ffffff;
+		color: #ffa640;
+	}
+	.title_tag_red {
+		background: #ffffff;
+		color: rgb(245, 82, 17);
+	}
+	.link_orange{
+		color: #ffa640;
 	}
 	.main_text{
 		font-size: 16px;
@@ -63,23 +82,9 @@
 			<br/>
 			<el-card class="box-card">
 				<div class="main_text">
-					UIMSTest提供<br/>课程管理、 <el-link href="/app/#/list" class="main_text el-icon-link">校内通知查询</el-link>、 <el-link href="/app/#/jlupages" class="main_text el-icon-link">校园网址导航</el-link>、 成绩统计<br/>等功能，较好整合了校内与校外访问接口，欢迎下载体验.
-				</div>
-				<br/>
-				<div class="main_text">
-					同时，您也可以在<el-link href="/app/#/jlupages_new" class="main_text el-icon-link">这里</el-link>贡献常用网址，不限校内外哦~
-				</div>
-			</el-card>
-			<br/>
-			<br/>
-			<el-card class="box-card box-card-new">
-				<el-tag class="title_tag">即将上线！</el-tag>
-				<br/>
-				<br/>
-				<div class="main_text">
-					UIMSTest即将上线课程编辑功能，助你轻松管理课程^_^
-					<br/>
-					UIMSTest即将上线数据备份/恢复功能，不在学校也能恢复数据哦~
+					UIMSTest提供<b>课程管理、 <el-link href="/app/#/list" type="primary" class="text el-icon-link">校内通知查询</el-link>、 
+					<el-link href="/app/#/jlupages_new" type="primary" class="text el-icon-link">校园网址导航</el-link>、 成绩统计</b>
+					等功能，较好整合了校内与校外访问接口，欢迎下载体验.
 				</div>
 			</el-card>
 			<br/>
@@ -90,11 +95,21 @@
 				<br/>
 				<div class="main_text">
 					<el-link class="text el-icon-link" type="primary" href="https://www.coolapk.com/apk/com.lu.mydemo" target="_blank">酷安网</el-link>
-					<br/>
+					<br/><br/>
 					<el-link class="text el-icon-link" type="primary" href="http://app.mi.com/details?id=com.lu.mydemo" target="_blank">小米应用商店</el-link>
-					<br/>
+					<br/><br/>
 					<el-link class="text el-icon-link" type="primary" href="https://appstore.huawei.com/app/C100937407" target="_blank">华为应用市场</el-link>
 					<br/>
+				</div>
+			</el-card>
+			<br/>
+			<br/>
+			<el-card class="box-card box-card-orange">
+				<el-tag class="title_tag title_tag_orange">关注疫情 共度难关</el-tag>
+				<br/>
+				<br/>
+				<div class="main_text">
+					<el-link class="text el-icon-link link_orange" type="primary" href="https://3g.dxy.cn/newh5/view/pneumonia" target="_blank">全国新型肺炎疫情实时动态（丁香医生）</el-link>
 				</div>
 			</el-card>
 			<br/>
@@ -105,6 +120,22 @@
 				<br/>
 				<div class="main_text">
 					<el-link class="text el-icon-link" type="primary" href="https://jq.qq.com/?_wv=1027&k=52o3LIT" target="_blank">加入UIMSTest内测QQ群</el-link>
+				</div>
+			</el-card>
+			<br/>
+			<br/>
+			<el-card class="box-card">
+				<el-tag class="title_tag">获取修改学生VPN指向地址代码</el-tag>
+				<br/><br/>
+				<el-link class="text el-icon-link" type="primary" href="/app/#/guide">不会操作？点这里</el-link>
+				<br/><br/>
+				<div class="main_text">
+					<el-input v-on:keyup.enter="getLinkStr()" style="width:80%" type="text" v-model="linkStr" placeholder="输入网址..."></el-input>
+					<el-button type="primary" @click="getLinkStr()">确 定</el-button>
+				</div>
+				<br/>
+				<div class="main_text">
+					<el-input style="width:100%" type="textarea" :rows="5" v-model="testLinkStr" placeholder="请在上方输入网址，点击“确定”..."></el-input>
 				</div>
 			</el-card>
 			<br/>
@@ -158,6 +189,19 @@
 					(模块建设中...)
 				</div>
 			</el-card>
+			<br/>
+			<br/>
+			<el-card class="box-card">
+				<el-tag class="title_tag">捐赠开发者</el-tag>
+				<br/>
+				<br/>
+				<div class="main_text">
+					应用的良好运行需要您的认可与支持，
+					<el-link class="text el-icon-link" type="primary" href="/app/#/donate">点击此处捐赠开发者</el-link>。
+				</div>
+			</el-card>
+			<br/>
+			<br/>
 		</div>
 		<v-footer title="2045.site">
 			<li slot="right">电影数据来源：猫眼专业版</li>
@@ -179,6 +223,11 @@
 				//电影数据弹出框高度
 				popUpWindowHight : window.innerHeight * 0.7,
 				popUpWindowWidth : window.innerWidth * 0.7,
+
+				//输入地址
+				linkStr: '',
+				//地址显示Str
+				testLinkStr: '',
 			}
 		},
         computed: mapState({ user: state => state.user }),
@@ -258,7 +307,39 @@
 			openMoviePage(movie_name){
 				// console.log(movie_name);
 				window.open(("https://search.douban.com/movie/subject_search?search_text=" + movie_name));
-			}
+			},
+			getLinkStr(){
+                var api_link = huawei_host + ":8199/api/LinkJSCode/getCode";
+				this.$http.post(
+						api_link,
+						{link: this.linkStr},
+						//解决跨域问题，不加无法跨域
+            			{emulateJSON: true, withCredentials: true}
+				).then(
+					function (response) 
+                    {
+                        if(response.data.status == 0){
+                            this.testLinkStr = response.data.data;
+                            this.$message({
+                                type: 'success',
+                                message: '获取Link成功.'
+                            });
+                        }
+                        else{
+                            this.$message({
+                                type: 'warning',
+                                message: response.data.message
+                            });
+                        }
+                    },
+                    function (err) {
+                        this.$alert(err, "Error!", {
+                            lockScroll: false,
+                            closeOnClickModal: true,
+                        });
+                    }
+				)
+            }
 		},
 		mounted(){
 			this.getInformation();
